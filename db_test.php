@@ -10,6 +10,7 @@
 
         if ($conn) {
             echo "<h1>Database connection successful!</h1>";
+            echo "<p>Connected to: techhive_db</p>";
         } else {
             echo "<h1>Connection failed: " . mysqli_connect_error() . "</h1>";
         }
