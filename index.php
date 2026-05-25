@@ -15,9 +15,6 @@ $users    = $db->query("SELECT COUNT(*) FROM users")->fetchColumn();
     <title>TechHive — Kenya's Premium Tech Store</title>
     <link rel="stylesheet" href="/techhive/css/style.css">
     <style>
-        /* ── Announcement ── */
-        .ann { background:#111827; color:rgba(255,255,255,0.7); text-align:center; font-size:0.78rem; font-weight:500; padding:10px 16px; letter-spacing:0.01em; }
-        .ann strong { color:#fff; }
 
         /* ── Hero ── */
         .hero {
@@ -195,10 +192,7 @@ $users    = $db->query("SELECT COUNT(*) FROM users")->fetchColumn();
 </head>
 <body>
 
-<!-- Announcement -->
-<div class="ann">
-    🚚 <strong>Free delivery</strong> on orders above KSh 5,000 &nbsp;·&nbsp; 📞 <strong>0700 123 456</strong>
-</div>
+
 
 <?php include 'includes/header.php'; ?>
 
@@ -214,7 +208,7 @@ $users    = $db->query("SELECT COUNT(*) FROM users")->fetchColumn();
             Premium Tech,<br>Kenyan Prices.
         </h1>
         <p style="color:rgba(255,255,255,0.55);font-size:1rem;line-height:1.75;max-width:400px;margin-bottom:36px;">
-            Genuine laptops, phones and accessories. Fast delivery, real warranty, M-Pesa accepted.
+            Genuine laptops, phones and accessories. Fast delivery..
         </p>
         <div style="display:flex;gap:14px;flex-wrap:wrap;">
             <a href="/techhive/products/index.php" class="btn-primary"

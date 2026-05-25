@@ -2,7 +2,7 @@
 require_once 'config.php';
 session_start();
 
-if (isset($_SESSION['user_id'])) { header('Location: dynamic_input.php'); exit; }
+if (isset($_SESSION['user_id'])) { header('Location: index.php'); exit; }
 
 $error = '';
 
@@ -22,24 +22,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['user_id']  = $user['id'];
             $_SESSION['username'] = $user['username'];
             $_SESSION['role']     = $user['role'];
-            header('Location: dynamic_input.php');
+            header('Location: index.php');
             exit;
         } else {
             $error = 'Invalid email or password.';
         }
     }
-}
-
-$googleAuthUrl = null;
-if (defined('GOOGLE_CLIENT_ID') && GOOGLE_CLIENT_ID !== '') {
-    $params = http_build_query([
-        'client_id'     => GOOGLE_CLIENT_ID,
-        'redirect_uri'  => GOOGLE_REDIRECT_URI,
-        'response_type' => 'code',
-        'scope'         => 'openid email profile',
-        'access_type'   => 'online',
-    ]);
-    $googleAuthUrl = 'https://accounts.google.com/o/oauth2/v2/auth?' . $params;
 }
 ?>
 <!DOCTYPE html>
@@ -50,126 +38,145 @@ if (defined('GOOGLE_CLIENT_ID') && GOOGLE_CLIENT_ID !== '') {
     <title>Sign In — TechHive</title>
     <link rel="stylesheet" href="/techhive/css/style.css">
     <style>
-        body { display: flex; min-height: 100vh; }
-        .auth-left {
-            flex: 1;
-            background: #0f172a;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 64px 56px;
-        }
-        .auth-right {
-            flex: 1;
+        body {
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 48px 24px;
-            background: #fff;
+            background: #f1f5f9;
+            padding: 24px;
+            margin: 0;
         }
-        @media (max-width: 768px) {
-            .auth-left { display: none; }
-            .auth-right { padding: 48px 20px; }
+
+        .auth-card {
+            display: flex;
+            width: 100%;
+            max-width: 1020px;
+            min-height: 560px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 24px 80px rgba(0,0,0,0.13);
+        }
+
+        /* ── Left (dark blue) ── */
+        .auth-left {
+            width: 44%;
+            background: #0f172a;
+            padding: 48px 44px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .auth-left h2 {
+            font-size: 1.65rem;
+            font-weight: 900;
+            color: #fff;
+            line-height: 1.2;
+            letter-spacing: -0.8px;
+            margin: 32px 0 12px;
+        }
+        .auth-left p {
+            color: rgba(255,255,255,0.4);
+            font-size: 0.9rem;
+            line-height: 1.7;
+            margin-bottom: 36px;
+        }
+        .auth-left-img {
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .auth-left-img img {
+            width: 100%; height: 160px;
+            object-fit: cover;
+            opacity: 0.65;
+            display: block;
+        }
+
+        /* ── Right (white) ── */
+        .auth-right {
+            flex: 1;
+            background: #fff;
+            padding: 48px 44px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        @media (max-width: 640px) {
+            .auth-card { flex-direction: column; border-radius: 16px; }
+            .auth-left  { width: 100%; padding: 36px 28px; }
+            .auth-right { padding: 36px 28px; }
+            .auth-left-img { display: none; }
         }
     </style>
 </head>
 <body>
 
-<!-- Left panel -->
-<div class="auth-left">
-    <a href="/techhive/index.php" style="font-size:1.3rem;font-weight:900;color:#fff;text-decoration:none;letter-spacing:-0.5px;margin-bottom:48px;display:block;">
-        TechHive
-    </a>
-    <h2 style="font-size:2rem;font-weight:900;color:#fff;line-height:1.15;letter-spacing:-1px;margin-bottom:16px;">
-        Kenya's home<br>for premium tech.
-    </h2>
-    <p style="color:rgba(255,255,255,0.4);font-size:0.95rem;line-height:1.7;">
-        Genuine laptops, phones and accessories. Fast delivery, real warranty.
-    </p>
+<div class="auth-card">
 
-    <!-- Floating product image -->
-    <div style="margin-top:48px;border-radius:16px;overflow:hidden;max-width:340px;">
-        <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&q=80"
-             alt="Laptop" style="width:100%;height:200px;object-fit:cover;opacity:0.7;">
-    </div>
-</div>
-
-<!-- Right panel: form -->
-<div class="auth-right">
-<div style="width:100%;max-width:360px;">
-
-    <div style="margin-bottom:32px;">
-        <h1 style="font-size:1.6rem;font-weight:800;color:#111827;letter-spacing:-0.5px;margin-bottom:6px;">Sign in</h1>
-        <p style="color:#6b7280;font-size:0.875rem;">Welcome back to TechHive</p>
-    </div>
-
-    <?php if ($error): ?>
-        <div class="alert-error"><?= htmlspecialchars($error) ?></div>
-    <?php endif; ?>
-
-    <!-- Google -->
-    <?php if ($googleAuthUrl): ?>
-        <a href="<?= $googleAuthUrl ?>" class="btn-google" style="margin-bottom:20px;">
-            <svg width="18" height="18" viewBox="0 0 48 48">
-                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-                <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-            </svg>
-            Continue with Google
+    <!-- ── Left panel ── -->
+    <div class="auth-left">
+        <a href="/techhive/index.php"
+           style="font-size:1.1rem;font-weight:900;color:#fff;text-decoration:none;letter-spacing:-0.4px;">
+            TechHive
         </a>
-    <?php else: ?>
-        <button class="btn-google" style="margin-bottom:20px;"
-            onclick="alert('Set up GOOGLE_CLIENT_ID in config.php to enable Google login.')">
-            <svg width="18" height="18" viewBox="0 0 48 48">
-                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-                <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-            </svg>
-            Continue with Google
-        </button>
-    <?php endif; ?>
+        <h2>Kenya's home<br>for premium tech.</h2>
+        <p>Genuine laptops, phones and accessories.<br>Fast delivery, real warranty.</p>
+        <div class="auth-left-img">
+            <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&q=80" alt="Laptop">
+        </div>
+    </div>
 
-    <div class="divider">or</div>
+    <!-- ── Right panel ── -->
+    <div class="auth-right">
 
-    <form id="login-form" method="POST" novalidate>
-
-        <div style="margin-bottom:16px;">
-            <label for="email" class="label">Email address</label>
-            <input type="email" id="email" name="email" class="field"
-                placeholder="you@example.com"
-                value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
-            <p id="email-error" class="field-error"></p>
+        <div style="margin-bottom:28px;">
+            <h1 style="font-size:1.5rem;font-weight:800;color:#111827;letter-spacing:-0.5px;margin-bottom:5px;">
+                Sign in
+            </h1>
+            <p style="color:#6b7280;font-size:0.85rem;">Welcome back to TechHive</p>
         </div>
 
-        <div style="margin-bottom:24px;">
-            <label for="password" class="label">Password</label>
-            <div style="position:relative;">
-                <input type="password" id="password" name="password" class="field"
-                    placeholder="••••••••" style="padding-right:56px;">
-                <button type="button" id="toggle-password"
-                    style="position:absolute;right:12px;top:50%;transform:translateY(-50%);
-                           background:none;border:none;color:#6b7280;font-size:0.75rem;
-                           font-weight:600;cursor:pointer;font-family:inherit;">
-                    Show
-                </button>
+        <?php if ($error): ?>
+            <div class="alert-error" style="margin-bottom:20px;"><?= htmlspecialchars($error) ?></div>
+        <?php endif; ?>
+
+        <form id="login-form" method="POST" novalidate>
+
+            <div style="margin-bottom:16px;">
+                <label for="email" class="label">Email address</label>
+                <input type="email" id="email" name="email" class="field"
+                       placeholder="you@example.com"
+                       value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
+                <p id="email-error" class="field-error"></p>
             </div>
-            <p id="password-error" class="field-error"></p>
-        </div>
 
-        <button type="submit" class="btn-primary" style="width:100%;font-size:0.925rem;padding:12px;">
-            Sign in
-        </button>
+            <div style="margin-bottom:24px;">
+                <label for="password" class="label">Password</label>
+                <div style="position:relative;">
+                    <input type="password" id="password" name="password" class="field"
+                           placeholder="••••••••" style="padding-right:56px;">
+                    <button type="button" id="toggle-password"
+                            style="position:absolute;right:12px;top:50%;transform:translateY(-50%);
+                                   background:none;border:none;color:#6b7280;font-size:0.75rem;
+                                   font-weight:600;cursor:pointer;font-family:inherit;">Show</button>
+                </div>
+                <p id="password-error" class="field-error"></p>
+            </div>
 
-    </form>
+            <button type="submit" class="btn-primary" style="width:100%;font-size:0.9rem;padding:12px;">
+                Sign in
+            </button>
 
-    <p style="text-align:center;margin-top:20px;font-size:0.85rem;color:#6b7280;">
-        No account?
-        <a href="register.php" style="color:#111827;font-weight:700;text-decoration:none;">Create one free</a>
-    </p>
+        </form>
 
-</div>
+        <p style="text-align:center;margin-top:20px;font-size:0.85rem;color:#6b7280;">
+            No account?
+            <a href="register.php" style="color:#111827;font-weight:700;text-decoration:none;">Create one free</a>
+        </p>
+
+    </div>
+
 </div>
 
 <script src="/techhive/js/main.js"></script>
