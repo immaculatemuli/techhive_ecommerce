@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($action === 'add' && $product_id > 0) {
         $_SESSION['cart'][$product_id] = ($_SESSION['cart'][$product_id] ?? 0) + 1;
         // Redirect back to referrer (products page) or cart
-        $back = $_SERVER['HTTP_REFERER'] ?? '/techhive/products/index.php';
+        $back = $_SERVER['HTTP_REFERER'] ?? '/techhive/Project/products/index.php';
         header('Location: ' . $back);
         exit;
     }
@@ -80,7 +80,7 @@ $total    = $subtotal + $shipping;
             <p style="color:var(--muted);font-size:0.875rem;margin-bottom:28px;">
                 Browse our products and add something you like.
             </p>
-            <a href="/techhive/products/index.php" class="btn-primary">Shop Now</a>
+            <a href="/techhive/Project/products/index.php" class="btn-primary">Shop Now</a>
         </div>
 
     <?php else: ?>
@@ -203,19 +203,19 @@ $total    = $subtotal + $shipping;
                 </div>
 
                 <?php if (isset($_SESSION['user_id'])): ?>
-                    <a href="/techhive/checkout.php" class="btn-primary" style="display:block;width:100%;margin-top:20px;text-align:center;">
+                    <a href="/techhive/Project/checkout.php" class="btn-primary" style="display:block;width:100%;margin-top:20px;text-align:center;">
                         Proceed to Checkout
                     </a>
                 <?php else: ?>
-                    <a href="/techhive/login.php" class="btn-primary" style="display:block;width:100%;margin-top:20px;text-align:center;">
+                    <a href="/techhive/Project/login.php" class="btn-primary" style="display:block;width:100%;margin-top:20px;text-align:center;">
                         Sign in to Checkout
                     </a>
                     <p style="font-size:0.75rem;color:var(--muted);text-align:center;margin-top:8px;">
-                        or <a href="/techhive/register.php" style="color:var(--accent);text-decoration:none;">create an account</a>
+                        or <a href="/techhive/Project/register.php" style="color:var(--accent);text-decoration:none;">create an account</a>
                     </p>
                 <?php endif; ?>
 
-                <a href="/techhive/products/index.php"
+                <a href="/techhive/Project/products/index.php"
                     style="display:block;text-align:center;margin-top:12px;font-size:0.8rem;color:var(--muted);text-decoration:none;">
                     ← Continue shopping
                 </a>

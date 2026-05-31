@@ -3,15 +3,16 @@
 
 <footer>
     <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:20px;margin-bottom:16px;">
-        <a href="/techhive/index.php">Home</a>
-        <a href="/techhive/products/index.php">Products</a>
-        <a href="/techhive/cart.php">Cart</a>
-        <a href="/techhive/login.php">Sign in</a>
-        <a href="/techhive/register.php">Register</a>
+        <a href="/techhive/Project/index.php">Home</a>
+        <a href="/techhive/Project/products/index.php">Products</a>
+        <a href="/techhive/Project/cart.php">Cart</a>
+        <a href="/techhive/Project/contact.php">Contact</a>
+        <a href="/techhive/Project/login.php">Sign in</a>
+        <a href="/techhive/Project/register.php">Register</a>
     </div>
-    <p>&copy; <?= date('Y') ?> TechHive &mdash; BIT3208</p>
+    <p>&copy; <?= date('Y') ?> TechHive</p>
 </footer>
 
-<script src="/techhive/js/main.js"></script>
+<script src="/techhive/Project/js/main.js"></script>
 </body>
 </html>

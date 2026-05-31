@@ -106,16 +106,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <!-- Category -->
+            <?php
+            $db = getDB();
+            $existingCats = $db->query("SELECT DISTINCT category FROM products ORDER BY category")->fetchAll(PDO::FETCH_COLUMN);
+            ?>
             <div style="margin-bottom:16px;">
                 <label class="label">Category</label>
-                <select name="category" class="field">
-                    <option value="">Select category...</option>
-                    <?php foreach (['Laptops','Phones','Accessories','Tablets','Gaming'] as $cat): ?>
-                        <option value="<?= $cat ?>" <?= ($_POST['category'] ?? '') === $cat ? 'selected' : '' ?>>
-                            <?= $cat ?>
-                        </option>
+                <input type="text" name="category" class="field" list="cat-list"
+                    placeholder="e.g. Laptops"
+                    value="<?= htmlspecialchars($_POST['category'] ?? '') ?>" required>
+                <datalist id="cat-list">
+                    <?php foreach ($existingCats as $cat): ?>
+                        <option value="<?= htmlspecialchars($cat) ?>">
                     <?php endforeach; ?>
-                </select>
+                </datalist>
+                <p style="font-size:0.75rem;color:var(--muted);margin-top:4px;">Pick an existing category or type a new one</p>
             </div>
 
             <!-- Image upload -->

@@ -125,15 +125,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             </div>
 
+            <?php
+            $existingCats = $db->query("SELECT DISTINCT category FROM products ORDER BY category")->fetchAll(PDO::FETCH_COLUMN);
+            ?>
             <div style="margin-bottom:16px;">
                 <label class="label">Category</label>
-                <select name="category" class="field">
-                    <?php foreach (['Laptops','Phones','Accessories','Tablets','Gaming'] as $cat): ?>
-                        <option value="<?= $cat ?>" <?= $product['category'] === $cat ? 'selected' : '' ?>>
-                            <?= $cat ?>
-                        </option>
+                <input type="text" name="category" class="field" list="cat-list"
+                    placeholder="e.g. Laptops"
+                    value="<?= htmlspecialchars($product['category']) ?>" required>
+                <datalist id="cat-list">
+                    <?php foreach ($existingCats as $cat): ?>
+                        <option value="<?= htmlspecialchars($cat) ?>">
                     <?php endforeach; ?>
-                </select>
+                </datalist>
+                <p style="font-size:0.75rem;color:var(--muted);margin-top:4px;">Pick an existing category or type a new one</p>
             </div>
 
             <!-- Current image preview -->
@@ -141,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label class="label">Current Image</label>
                 <?php if ($product['image'] && file_exists('../images/' . $product['image'])): ?>
                     <div style="margin-bottom:8px;">
-                        <img src="/techhive/images/<?= htmlspecialchars($product['image']) ?>"
+                        <img src="/techhive/Project/images/<?= htmlspecialchars($product['image']) ?>"
                              style="height:80px;border-radius:6px;border:1px solid var(--border);">
                     </div>
                 <?php else: ?>

@@ -321,7 +321,7 @@ $products = $stmt->fetchAll();
 </section>
 
 <?php include '../includes/footer.php'; ?>
-<script src="/techhive/js/main.js"></script>
+<script src="/techhive/Project/js/main.js"></script>
 <script>
 (function () {
     const SPIN  = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2a10 10 0 0 1 10 10"><animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur=".7s" repeatCount="indefinite"/></path></svg>`;
@@ -341,7 +341,7 @@ $products = $stmt->fetchAll();
         btn.innerHTML = SPIN;
 
         try {
-            const res = await fetch('/techhive/cart.php', {
+            const res = await fetch('/techhive/Project/cart.php', {
                 method : 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body   : `action=add&product_id=${id}`
@@ -465,7 +465,7 @@ $products = $stmt->fetchAll();
     // ── Badge live update ─────────────────────────────────────
     async function updateBadge() {
         try {
-            const data  = await (await fetch('/techhive/cart_count.php')).json();
+            const data  = await (await fetch('/techhive/Project/cart_count.php')).json();
             const badge = document.querySelector('.cart-count, #cart-count');
             if (!badge) return;
             badge.textContent = data.count;

@@ -31,7 +31,7 @@ function ksh(float $amount): string {
 function productImg(string $image, string $fallback = ''): string {
     if (empty($image)) return $fallback;
     if (str_starts_with($image, 'http')) return $image;          // external URL
-    return '/techhive/images/' . htmlspecialchars($image);        // local file
+    return '/techhive/Project/images/' . htmlspecialchars($image);  // local file
 }
 
 // getDB() returns a single shared PDO connection (singleton pattern)

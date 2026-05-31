@@ -12,3 +12,7 @@ $db->prepare("INSERT INTO users (username, email, password, role) VALUES (?, ?, 
 
 echo "Admin account created.<br>Email: admin@techhive.com<br>Password: admin123";
 ?>
+
+// git add Project/
+// git commit -m "Added project source code to Project/ folder"
+// git push origin main

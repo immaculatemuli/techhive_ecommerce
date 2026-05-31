@@ -27,7 +27,7 @@ $related = $related->fetchAll();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($p['name']) ?> | TechHive</title>
-    <link rel="stylesheet" href="/techhive/css/style.css">
+    <link rel="stylesheet" href="/techhive/Project/css/style.css">
 </head>
 <body>
 
@@ -110,9 +110,9 @@ $related = $related->fetchAll();
 <div class="pd-wrap">
 
     <nav class="breadcrumb">
-        <a href="/techhive/index.php">Home</a>
+        <a href="/techhive/Project/index.php">Home</a>
         <span>›</span>
-        <a href="/techhive/products/index.php">Products</a>
+        <a href="/techhive/Project/products/index.php">Products</a>
         <span>›</span>
         <a href="/techhive/products/index.php?category=<?= urlencode($p['category']) ?>"><?= htmlspecialchars($p['category']) ?></a>
         <span>›</span>
@@ -181,14 +181,14 @@ $related = $related->fetchAll();
                     <span style="font-size:0.75rem;color:#9ca3af;"><?= $stock ?> available</span>
                 </div>
 
-                <form method="POST" action="/techhive/cart.php">
+                <form method="POST" action="/techhive/Project/cart.php">
                     <input type="hidden" name="action"     value="add">
                     <input type="hidden" name="product_id" value="<?= $p['id'] ?>">
                     <input type="hidden" name="qty"        value="1" id="qty-input">
                     <button type="submit" class="pd-btn-cart">Add to Cart</button>
                 </form>
 
-                <a href="/techhive/checkout.php" class="pd-btn-checkout">Buy Now</a>
+                <a href="/techhive/Project/checkout.php" class="pd-btn-checkout">Buy Now</a>
 
             <?php else: ?>
                 <button disabled class="pd-btn-cart" style="background:#e5e7eb;color:#9ca3af;cursor:not-allowed;">

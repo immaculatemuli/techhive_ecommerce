@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <h2 style="font-size:1.4rem;font-weight:800;color:var(--text);margin-bottom:8px;">Order placed!</h2>
             <p style="color:var(--muted);font-size:0.9rem;margin-bottom:4px;">Order #<?= $success ?> has been received.</p>
             <p style="color:var(--muted);font-size:0.875rem;margin-bottom:32px;">We'll contact you soon to confirm delivery.</p>
-            <a href="/techhive/products/index.php" class="btn-primary">Continue Shopping</a>
+            <a href="/techhive/Project/products/index.php" class="btn-primary">Continue Shopping</a>
         </div>
     <?php else: ?>
 

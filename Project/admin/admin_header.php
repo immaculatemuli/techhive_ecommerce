@@ -19,7 +19,7 @@ $pageLabel = $pageLabels[$cur] ?? 'Admin';
     <title><?= $pageLabel ?> | TechHive Admin</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
-    <link rel="stylesheet" href="/techhive/css/style.css">
+    <link rel="stylesheet" href="/techhive/Project/css/style.css">
     <style>
         .a-sidebar, .a-main, .a-topbar, .a-body, .a-sidebar * {
             font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
@@ -174,14 +174,14 @@ $pageLabel = $pageLabels[$cur] ?? 'Admin';
 <aside class="a-sidebar">
 
     <div class="a-brand">
-        <a href="/techhive/index.php" class="a-brand-name">Tech<span>Hive</span></a>
+        <a href="/techhive/Project/index.php" class="a-brand-name">Tech<span>Hive</span></a>
         <span class="a-brand-badge">Admin Panel</span>
     </div>
 
     <nav class="a-nav">
         <span class="a-nav-section">Main</span>
 
-        <a href="/techhive/admin/index.php"
+        <a href="/techhive/Project/admin/index.php"
            class="a-link <?= $cur === 'index' ? 'active' : '' ?>">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/>
@@ -190,7 +190,7 @@ $pageLabel = $pageLabels[$cur] ?? 'Admin';
             Dashboard
         </a>
 
-        <a href="/techhive/admin/orders.php"
+        <a href="/techhive/Project/admin/orders.php"
            class="a-link <?= $cur === 'orders' ? 'active' : '' ?>">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
@@ -208,7 +208,7 @@ $pageLabel = $pageLabels[$cur] ?? 'Admin';
             ?>
         </a>
 
-        <a href="/techhive/admin/users.php"
+        <a href="/techhive/Project/admin/users.php"
            class="a-link <?= $cur === 'users' ? 'active' : '' ?>">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -218,7 +218,7 @@ $pageLabel = $pageLabels[$cur] ?? 'Admin';
 
         <span class="a-nav-section">Catalog</span>
 
-        <a href="/techhive/admin/add_product.php"
+        <a href="/techhive/Project/admin/add_product.php"
            class="a-link <?= $cur === 'add_product' ? 'active' : '' ?>">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
@@ -226,7 +226,7 @@ $pageLabel = $pageLabels[$cur] ?? 'Admin';
             Add Product
         </a>
 
-        <a href="/techhive/admin/index.php#products"
+        <a href="/techhive/Project/admin/index.php#products"
            class="a-link <?= $cur === 'index' ? '' : '' ?>">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M20 7L12 3 4 7m16 0v10l-8 4m0 0L4 17V7m8 10V7"/>
@@ -237,13 +237,13 @@ $pageLabel = $pageLabels[$cur] ?? 'Admin';
     </nav>
 
     <div class="a-sidebar-bottom">
-        <a href="/techhive/index.php" class="a-link">
+        <a href="/techhive/Project/index.php" class="a-link">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
             </svg>
             View Store
         </a>
-        <a href="/techhive/logout.php" class="a-link">
+        <a href="/techhive/Project/logout.php" class="a-link">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
             </svg>

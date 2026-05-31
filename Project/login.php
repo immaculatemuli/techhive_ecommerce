@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign In | TechHive</title>
-    <link rel="stylesheet" href="/techhive/css/style.css">
+    <link rel="stylesheet" href="/techhive/Project/css/style.css">
     <style>
         body {
             min-height: 100vh;
@@ -116,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <!-- ── Left panel ── -->
     <div class="auth-left">
-        <a href="/techhive/index.php"
+        <a href="/techhive/Project/index.php"
            style="font-size:1.1rem;font-weight:900;color:#fff;text-decoration:none;letter-spacing:-0.4px;">
             TechHive
         </a>
@@ -179,6 +179,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 </div>
 
-<script src="/techhive/js/main.js"></script>
+<script src="/techhive/Project/js/main.js"></script>
 </body>
 </html>

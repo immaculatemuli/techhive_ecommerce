@@ -13,7 +13,7 @@ $users    = $db->query("SELECT COUNT(*) FROM users")->fetchColumn();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TechHive | Kenya's Premium Tech Store</title>
-    <link rel="stylesheet" href="/techhive/css/style.css">
+    <link rel="stylesheet" href="/techhive/Project/css/style.css">
     <style>
 
         /* ── Hero ── */
@@ -211,11 +211,11 @@ $users    = $db->query("SELECT COUNT(*) FROM users")->fetchColumn();
             Genuine laptops, phones and accessories. Fast delivery..
         </p>
         <div style="display:flex;gap:14px;flex-wrap:wrap;">
-            <a href="/techhive/products/index.php" class="btn-primary"
+            <a href="/techhive/Project/products/index.php" class="btn-primary"
                style="background:#fff;color:#111827;padding:14px 32px;font-size:0.95rem;letter-spacing:-0.2px;">
                 Shop Now
             </a>
-            <a href="/techhive/products/index.php"
+            <a href="/techhive/Project/products/index.php"
                style="padding:14px 32px;font-size:0.95rem;font-weight:600;color:rgba(255,255,255,0.65);
                       text-decoration:none;border:1.5px solid rgba(255,255,255,0.2);border-radius:8px;letter-spacing:-0.2px;
                       transition:all 0.2s;"
@@ -237,20 +237,23 @@ $users    = $db->query("SELECT COUNT(*) FROM users")->fetchColumn();
 
     <div class="cat-cards">
         <?php
-        $catData = [
-            ['Laptops',     'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=500&q=80&fit=crop'],
-            ['Phones',      'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500&q=80&fit=crop'],
-            ['Accessories', 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80&fit=crop'],
-            ['Tablets',     'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=500&q=80&fit=crop'],
-            ['Gaming',      'https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&q=80&fit=crop'],
+        $catImgMap = [
+            'Laptops'     => 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=500&q=80&fit=crop',
+            'Phones'      => 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500&q=80&fit=crop',
+            'Accessories' => 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80&fit=crop',
+            'Tablets'     => 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=500&q=80&fit=crop',
+            'Gaming'      => 'https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&q=80&fit=crop',
         ];
-        foreach ($catData as [$name, $img]):
+        $catFallback = 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=500&q=80&fit=crop';
+        $dbCats = $db->query("SELECT DISTINCT category FROM products ORDER BY category")->fetchAll(PDO::FETCH_COLUMN);
+        foreach ($dbCats as $name):
+            $img = $catImgMap[$name] ?? $catFallback;
         ?>
-        <a href="/techhive/products/index.php?category=<?= urlencode($name) ?>" class="cat-card reveal">
-            <img src="<?= $img ?>" alt="<?= $name ?>" loading="lazy">
+        <a href="/techhive/Project/products/index.php?category=<?= urlencode($name) ?>" class="cat-card reveal">
+            <img src="<?= $img ?>" alt="<?= htmlspecialchars($name) ?>" loading="lazy">
             <div class="cat-card-overlay"></div>
             <div class="cat-card-name">
-                <span><?= $name ?></span>
+                <span><?= htmlspecialchars($name) ?></span>
                 <span style="font-size:1rem;opacity:0.6;">→</span>
             </div>
         </a>
@@ -268,7 +271,7 @@ $users    = $db->query("SELECT COUNT(*) FROM users")->fetchColumn();
             <h2 class="sec-title reveal">Featured Products</h2>
             <p style="color:#6b7280;font-size:0.875rem;margin-top:4px;" class="reveal reveal-d1"><?= $total ?> products in store</p>
         </div>
-        <a href="/techhive/products/index.php"
+        <a href="/techhive/Project/products/index.php"
            style="font-size:0.875rem;font-weight:700;color:#1e3a8a;text-decoration:none;
                   padding-bottom:2px;border-bottom:2px solid #1e3a8a;" class="reveal">
             View all →
@@ -282,7 +285,7 @@ $users    = $db->query("SELECT COUNT(*) FROM users")->fetchColumn();
         <div class="p-card reveal reveal-d<?= ($i % 3) + 1 ?>"
              data-name="<?= htmlspecialchars(strtolower($p['name'])) ?>">
 
-            <a href="/techhive/products/view.php?id=<?= $p['id'] ?>" class="p-img-wrap" style="display:block;text-decoration:none;">
+            <a href="/techhive/Project/products/view.php?id=<?= $p['id'] ?>" class="p-img-wrap" style="display:block;text-decoration:none;">
                 <?php if ($src): ?>
                     <img class="p-img" src="<?= $src ?>" alt="<?= htmlspecialchars($p['name']) ?>" loading="lazy">
                 <?php else: ?>
@@ -315,7 +318,7 @@ $users    = $db->query("SELECT COUNT(*) FROM users")->fetchColumn();
 
             <div class="p-body">
                 <div style="flex:1;">
-                    <a href="/techhive/products/view.php?id=<?= $p['id'] ?>" style="text-decoration:none;">
+                    <a href="/techhive/Project/products/view.php?id=<?= $p['id'] ?>" style="text-decoration:none;">
                         <h3 style="font-size:0.93rem;font-weight:700;color:#111827;line-height:1.4;margin-bottom:4px;">
                             <?= htmlspecialchars($p['name']) ?>
                         </h3>
@@ -414,7 +417,7 @@ if ($deal):
                 <?= ksh($deal['price']) ?>
             </p>
             <div style="display:flex;gap:12px;flex-wrap:wrap;">
-                <form method="POST" action="/techhive/cart.php">
+                <form method="POST" action="/techhive/Project/cart.php">
                     <input type="hidden" name="action"     value="add">
                     <input type="hidden" name="product_id" value="<?= $deal['id'] ?>">
                     <button type="submit" class="btn-primary"
@@ -422,7 +425,7 @@ if ($deal):
                         Add to Cart
                     </button>
                 </form>
-                <a href="/techhive/products/index.php"
+                <a href="/techhive/Project/products/index.php"
                    style="padding:13px 28px;font-size:0.9rem;font-weight:600;color:rgba(255,255,255,0.45);
                           text-decoration:none;border:1.5px solid rgba(255,255,255,0.12);border-radius:8px;
                           transition:all 0.15s;"
@@ -477,7 +480,7 @@ const cObs = new IntersectionObserver(es => es.forEach(e => {
 document.querySelectorAll('.counter').forEach(el => cObs.observe(el));
 
 // Cart badge
-fetch('/techhive/cart_count.php').then(r=>r.json()).then(d=>{
+fetch('/techhive/Project/cart_count.php').then(r=>r.json()).then(d=>{
     if(d.count>0){const b=document.getElementById('cart-count');if(b){b.textContent=d.count;b.style.display='inline-flex';}}
 }).catch(()=>{});
 
@@ -500,7 +503,7 @@ fetch('/techhive/cart_count.php').then(r=>r.json()).then(d=>{
         btn.innerHTML = SPIN;
 
         try {
-            const res = await fetch('/techhive/cart.php', {
+            const res = await fetch('/techhive/Project/cart.php', {
                 method : 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body   : `action=add&product_id=${id}`
@@ -616,7 +619,7 @@ fetch('/techhive/cart_count.php').then(r=>r.json()).then(d=>{
 
     async function updateBadge() {
         try {
-            const data  = await (await fetch('/techhive/cart_count.php')).json();
+            const data  = await (await fetch('/techhive/Project/cart_count.php')).json();
             const badge = document.querySelector('.cart-count, #cart-count');
             if (!badge) return;
             badge.textContent = data.count;

@@ -47,7 +47,7 @@ $statusColors = [
             <p style="font-size:2rem;margin-bottom:12px;">🛍️</p>
             <h3 style="font-size:1rem;font-weight:700;color:var(--text);margin-bottom:6px;">No orders yet</h3>
             <p style="color:var(--muted);font-size:0.875rem;margin-bottom:24px;">Browse our products and place your first order.</p>
-            <a href="/techhive/products/index.php" class="btn-primary">Shop Now</a>
+            <a href="/techhive/Project/products/index.php" class="btn-primary">Shop Now</a>
         </div>
     <?php else: ?>
         <div class="card" style="overflow:hidden;">
@@ -83,8 +83,8 @@ $statusColors = [
     <?php endif; ?>
 
     <div style="margin-top:32px;display:flex;gap:12px;flex-wrap:wrap;">
-        <a href="/techhive/products/index.php" class="btn-primary" style="text-decoration:none;">Shop Products</a>
-        <a href="/techhive/logout.php"
+        <a href="/techhive/Project/products/index.php" class="btn-primary" style="text-decoration:none;">Shop Products</a>
+        <a href="/techhive/Project/logout.php"
             style="padding:10px 20px;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-size:0.875rem;font-weight:600;text-decoration:none;">
             Sign out
         </a>
