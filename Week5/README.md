@@ -41,3 +41,22 @@ Implemented:
 - Results displayed in admin table
 - Dynamic content pulled from techhive_db
 
+## Screenshots
+
+### Fig 1 – Database Creation
+![Database Creation](screenshots/fig1-database-creation.png)
+
+### Fig 2 – Creating Tables
+![Creating Tables A](screenshots/fig2a-creating-tables.png)
+![Creating Tables B](screenshots/fig2b-creating-tables.png)
+
+### Fig 3 – CRUD Operations
+![CRUD Operations A](screenshots/fig3a-crud-operations.png)
+![CRUD Operations B](screenshots/fig3b-crud-operations.png)
+
+### Fig 4 – PHP to Database Connection
+![PHP DB Connection](screenshots/fig4-php-database-connection.png)
+
+### Fig 5 – Fetching Database Records
+![Fetching Records A](screenshots/fig5a-fetching-database-records.png)
+![Fetching Records B](screenshots/fig5b-fetching-database-records.png)

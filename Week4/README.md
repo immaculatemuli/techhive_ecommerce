@@ -49,3 +49,19 @@ Stack comparison noted:
 | PHP Sessions | JWT Authentication |
 | XAMPP | Cloud Deployment |
 
+## Screenshots
+
+### Fig 1 – Login Form
+![Login Form](screenshots/fig1-login-form.png)
+
+### Fig 2 – Registration Form
+![Registration Form](screenshots/fig2-registration-form.png)
+
+### Fig 3 – Simple Authentication System
+![Auth System A](screenshots/fig3a-authentication-system.png)
+![Auth System B](screenshots/fig3b-authentication-system.png)
+![Auth System C](screenshots/fig3c-authentication-system.png)
+
+### Fig 4 – Backend Folder Structure
+![Backend Folder Structure](screenshots/fig4-backend-folder-structure.png)
+

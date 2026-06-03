@@ -6,15 +6,10 @@ $db       = getDB();
 $products = $db->query("SELECT * FROM products ORDER BY created_at DESC LIMIT 8")->fetchAll();
 $total    = $db->query("SELECT COUNT(*) FROM products")->fetchColumn();
 $users    = $db->query("SELECT COUNT(*) FROM users")->fetchColumn();
+$pageTitle = "TechHive | Kenya's Premium Tech Store";
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechHive | Kenya's Premium Tech Store</title>
-    <link rel="stylesheet" href="/techhive/Project/css/style.css">
-    <style>
+<?php include 'includes/header.php'; ?>
+<style>
 
         /* ── Hero ── */
         .hero {
@@ -189,12 +184,6 @@ $users    = $db->query("SELECT COUNT(*) FROM users")->fetchColumn();
             .hero-content { padding: 60px 20px; }
         }
     </style>
-</head>
-<body>
-
-
-
-<?php include 'includes/header.php'; ?>
 
 <!-- ═══ HERO ══════════════════════════════════════════════ -->
 <section class="hero">

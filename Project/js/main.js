@@ -185,12 +185,14 @@ if (searchInput && productCards.length) {
 function updateCartCount() {
     const badge = document.getElementById('cart-count');
     if (!badge) return;
-    fetch('/techhive/cart_count.php')
+    fetch('/techhive/Project/cart_count.php')
         .then(r => r.json())
         .then(d => {
             if (d.count > 0) {
                 badge.textContent = d.count;
                 badge.style.display = 'inline-flex';
+            } else {
+                badge.style.display = 'none';
             }
         })
         .catch(() => {});

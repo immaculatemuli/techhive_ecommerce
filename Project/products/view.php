@@ -20,16 +20,10 @@ $stock = (int)$p['stock'];
 $related = $db->prepare("SELECT * FROM products WHERE category = ? AND id != ? AND stock > 0 ORDER BY RAND() LIMIT 4");
 $related->execute([$p['category'], $p['id']]);
 $related = $related->fetchAll();
+
+$pageTitle = htmlspecialchars($p['name']) . ' | TechHive';
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= htmlspecialchars($p['name']) ?> | TechHive</title>
-    <link rel="stylesheet" href="/techhive/Project/css/style.css">
-</head>
-<body>
+<?php include '../includes/header.php'; ?>
 
 <style>
 .pd-wrap { max-width: 1140px; margin: 0 auto; padding: 36px 24px 72px; }
@@ -114,7 +108,7 @@ $related = $related->fetchAll();
         <span>›</span>
         <a href="/techhive/Project/products/index.php">Products</a>
         <span>›</span>
-        <a href="/techhive/products/index.php?category=<?= urlencode($p['category']) ?>"><?= htmlspecialchars($p['category']) ?></a>
+        <a href="/techhive/Project/products/index.php?category=<?= urlencode($p['category']) ?>"><?= htmlspecialchars($p['category']) ?></a>
         <span>›</span>
         <span style="color:#111827;font-weight:500;"><?= htmlspecialchars($p['name']) ?></span>
     </nav>
