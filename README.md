@@ -8,14 +8,6 @@ A PHP + MySQL e-commerce project built as part of the Advanced Web Design and De
 
 ---
 
-## Login Credentials (ADMIN)
-
-| Role | Email | Password |
-|------|-------|----------|
-| Admin | admin@techhive.com | admin123 |
-
----
-
 ## Setup
 
 1. Install [XAMPP](https://www.apachefriends.org/) and start Apache + MySQL
@@ -25,6 +17,14 @@ A PHP + MySQL e-commerce project built as part of the Advanced Web Design and De
    ```
 3. Open phpMyAdmin and import `Project/techhive_db.sql`
 4. Visit `http://localhost/techhive_ecommerce/Project/index.php`
+
+---
+
+## Login Credentials (ADMIN)
+
+| Role | Email | Password |
+|------|-------|----------|
+| Admin | admin@techhive.com | admin123 |
 
 ---
 
@@ -75,18 +75,22 @@ js/
 
 ## Logbook (`ADVANCED WEB-LOGBOOK.docx`)
 
-- Week 1: Local Environment Setup
-- Week 2: Wireframes and GUI Design
-- Week 3: JavaScript and PHP Basics
-- Week 4: Authentication System
-- Week 5: Database Components and CRUD Operations
+| Week | Content |
+|------|---------|
+| Week 1 | XAMPP installation, localhost test, hello world HTML/PHP, DB connection |
+| Week 2 | Low-fidelity wireframes, color theme, navigation structure, Figma prototype |
+| Week 3 | JavaScript form validation, password strength checker, PHP basics, dynamic input |
+| Week 4 | Login & register forms, session-based auth, logout, backend folder structure |
+| Week 5 | Database creation, table setup, CRUD operations, PHP-MySQL connection via PDO |
 
 ---
 
 ## Weekly Folders
 
-- `Week1/` — Environment setup, hello world, DB connection test
-- `Week2/` — Wireframes and Figma prototypes
-- `Week3/` — JS validation, PHP basics, dynamic input
-- `Week4/` — Login, register, sessions, folder structure
-- `Week5/` — MySQL schema, PDO connection, admin CRUD
+| Folder | Contents |
+|--------|---------|
+| `Week1/` | `hello.html`, `hello.php`, `db_test.php`, `techhive_db.sql`, screenshots |
+| `Week2/` | Wireframe and Figma prototype screenshots |
+| `Week3/` | `login.php`, `register.php`, `dynamic_input.php`, `main.js`, `db_test.php`, screenshots |
+| `Week4/` | `login.php`, `register.php`, `logout.php`, `dynamic_input.php`, `header.php`, `footer.php`, screenshots |
+| `Week5/` | `techhive_db.sql`, `admin/`, `config.php`, screenshots |
