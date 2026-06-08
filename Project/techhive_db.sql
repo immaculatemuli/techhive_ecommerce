@@ -1,6 +1,3 @@
--- ============================================================
--- TechHive Database  |  BIT3208
--- ============================================================
 
 CREATE DATABASE IF NOT EXISTS techhive_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE techhive_db;
