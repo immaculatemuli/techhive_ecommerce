@@ -82,6 +82,7 @@ js/
 | Week 3 | JavaScript form validation, password strength checker, PHP basics, dynamic input |
 | Week 4 | Login & register forms, session-based auth, logout, backend folder structure |
 | Week 5 | Database creation, table setup, CRUD operations, PHP-MySQL connection via PDO |
+| Week 6 | Database integration, PDO connection, full CRUD operations for products |
 
 ---
 
@@ -94,3 +95,4 @@ js/
 | `Week3/` | `login.php`, `register.php`, `dynamic_input.php`, `main.js`, `db_test.php`, screenshots |
 | `Week4/` | `login.php`, `register.php`, `logout.php`, `dynamic_input.php`, `header.php`, `footer.php`, screenshots |
 | `Week5/` | `techhive_db.sql`, `admin/`, `config.php`, screenshots |
+| `Week6/` | README, screenshots |
