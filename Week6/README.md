@@ -87,17 +87,20 @@ Foreign key constraints (`ON DELETE CASCADE`) maintain referential integrity bet
 ### Fig 1 – Database and Tables Created
 ![Database](screenshots/fig1-database.png)
 
-### Fig 2 – READ: Products Displayed
-![Read Products](screenshots/fig2-read-products.png)
+### Fig 2 – PDO Database Connection (config.php)
+![PDO Config](screenshots/fig2-pdo-config.png)
 
 ### Fig 3 – CREATE: Adding a Product
-![Create Product](screenshots/fig3-create-product.png)
+![Create Product](screenshots/fig3-create-operation.png)
 
-### Fig 4 – UPDATE: Editing a Product
-![Update Product](screenshots/fig4-update-product.png)
+### Fig 4 – READ: Products Displayed
+![Read Products](screenshots/fig4-read-operation.png)
 
-### Fig 5 – DELETE: Removing a Product
-![Delete Product](screenshots/fig5-delete-product.png)
+### Fig 5 – UPDATE: Editing a Product
+![Update Product](screenshots/fig5a-update-delete.png)
+
+### Fig 6 – DELETE: Removing a Product
+![Delete Product](screenshots/fig5b-update-delete.png)
 
 ## Reflection
 This week tied together the database and application layers of TechHive. Building the CRUD operations for products reinforced how prepared statements protect against SQL injection while keeping code readable. The singleton `getDB()` pattern in config.php made it simple to reuse one connection across the admin panel and storefront. The hardest part was handling image uploads alongside the update operation, ensuring old files are cleaned up without breaking the product record if validation fails.
