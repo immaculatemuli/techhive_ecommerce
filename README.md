@@ -15,8 +15,15 @@ A PHP + MySQL e-commerce project built as part of the Advanced Web Design and De
    ```
    git clone https://github.com/immaculatemuli/techhive_ecommerce.git
    ```
-3. Open phpMyAdmin and import `Project/techhive_db.sql`
-4. Visit `http://localhost/techhive_ecommerce/Project/index.php`
+3. Open phpMyAdmin and import the base database:
+   ```
+   Project/techhive_db.sql
+   ```
+4. Run the bonus-features migration to add new columns and tables:
+   ```
+   Project/update_db.sql
+   ```
+5. Visit `http://localhost/techhive_ecommerce/Project/index.php`
 
 ---
 
@@ -31,27 +38,37 @@ A PHP + MySQL e-commerce project built as part of the Advanced Web Design and De
 ## Project Files (`/Project`)
 
 ```
-config.php
-index.php
-login.php
-register.php
-logout.php
-google_auth.php
-dashboard.php
-cart.php
-cart_count.php
-checkout.php
-contact.php
-create_admin.php
-db_test.php
-dynamic_input.php
+config.php                  — DB config, SMTP, TOTP helpers, token generator
+index.php                   — Homepage (hero, categories, featured products, stats)
+login.php                   — Login with Remember Me and 2FA staging
+register.php                — Registration with email verification
+logout.php                  — Session + cookie clear
+dashboard.php               — User dashboard with quick-action cards
+forgot_password.php         — Request password reset email
+reset_password.php          — Set new password via token link
+verify_email.php            — Confirm email address via token link
+resend_verify.php           — Resend verification email
+2fa_setup.php               — Enable / disable two-factor authentication
+2fa_verify.php              — Enter TOTP code after login
+profile.php                 — Update profile info, avatar upload, change password
+google_auth.php             — Google OAuth callback
+cart.php                    — Cart logic (add, remove, update)
+cart_count.php              — Returns cart item count as JSON
+checkout.php                — Order placement
+contact.php                 — Contact form
+create_admin.php            — One-time admin account creator
+db_test.php                 — Database connection test
+dynamic_input.php           — Dynamic input demo
 hello.html
 hello.php
-setup_products.php
+setup_products.php          — Seed products into the database
 settings.json
-techhive_db.sql
+techhive_db.sql             — Base database dump
+update_db.sql               — Migration: adds remember_token, email_verified, 2FA,
+                              profile_image, phone, bio columns; creates
+                              password_resets and email_verifications tables
 admin/
-  index.php
+  index.php                 — Admin dashboard
   add_product.php
   edit_product.php
   delete_product.php
@@ -60,20 +77,22 @@ admin/
   admin_header.php
   admin_footer.php
 products/
-  index.php
-  view.php
+  index.php                 — Product listing with search and category filter
+  view.php                  — Single product detail page
 includes/
-  header.php
+  header.php                — Shared nav (checkRememberMe, cart badge, profile link)
   footer.php
 css/
-  style.css
+  style.css                 — Global styles, mobile-first breakpoints, responsive images
 js/
   main.js
+vendor/
+  phpmailer/                — PHPMailer (Exception.php, PHPMailer.php, SMTP.php)
 ```
 
 ---
 
-## Logbook (`ADVANCED WEB-LOGBOOK.docx`)
+## Logbook (`ADVANCED WEB-LOGBOOK.pdf`)
 
 | Week | Content |
 |------|---------|
@@ -83,6 +102,8 @@ js/
 | Week 4 | Login & register forms, session-based auth, logout, backend folder structure |
 | Week 5 | Database creation, table setup, CRUD operations, PHP-MySQL connection via PDO |
 | Week 6 | Database integration, PDO connection, full CRUD operations for products |
+| Week 7 | User authentication and session management; bonus: Password Reset, Email Verification, 2FA, Profile |
+| Week 8 | Responsive Web Design and Mobile-First Development — profile page, mobile/tablet/desktop views |
 
 ---
 
@@ -96,3 +117,5 @@ js/
 | `Week4/` | `login.php`, `register.php`, `logout.php`, `dynamic_input.php`, `header.php`, `footer.php`, screenshots |
 | `Week5/` | `techhive_db.sql`, `admin/`, `config.php`, screenshots |
 | `Week6/` | README, screenshots |
+| `Week7/` | README, screenshots — registration, login, session, logout, password reset, email verification, 2FA, profile |
+| `Week8/` | README, screenshots — responsive profile page, mobile view, tablet view, desktop view |
