@@ -3,6 +3,7 @@
 
 ## Fig 1 — User Registration with Password Hashing
 ![Fig 1](screenshots/fig1-register.png)
+![Fig 1b](screenshots/fig1b-register.png)
 
 ## Fig 2 — User Login
 ![Fig 2](screenshots/fig2-login.png)
@@ -19,15 +20,18 @@
 
 ### Bonus Fig 1 — Password Reset
 ![Bonus Fig 1](screenshots/bonus1-password-reset.png)
+![Bonus Fig 1b](screenshots/bonus1b-password-reset.png)
 
 ### Bonus Fig 2 — Email Verification
 ![Bonus Fig 2](screenshots/bonus2-email-verification.png)
 
 ### Bonus Fig 3 — Two-Factor Authentication (2FA)
 ![Bonus Fig 3](screenshots/bonus3-2fa.png)
+![Bonus Fig 3b](screenshots/bonus3b-2fa.png)
 
 ### Bonus Fig 4 — User Profile Management
 ![Bonus Fig 4](screenshots/bonus4-profile.png)
+![Bonus Fig 4b](screenshots/bonus4b-profile.png)
 
 ---
 
