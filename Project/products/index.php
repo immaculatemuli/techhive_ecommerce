@@ -24,14 +24,14 @@ $products = $stmt->fetchAll();
 <?php include '../includes/header.php'; ?>
 
 <style>
-/* ── Hero ── */
+/* ── Hero — mobile-first padding ── */
 .products-hero {
     position: relative;
     background-image: url('https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=1600&q=80&fit=crop');
     background-size: cover;
     background-position: center;
     background-attachment: scroll;
-    padding: 72px 40px 80px;
+    padding: 52px 20px 60px; /* mobile default */
 }
 .products-hero::before {
     content: '';
@@ -140,9 +140,18 @@ $products = $stmt->fetchAll();
 .p-card:hover .p-img { transform: scale(1.07); }
 .p-body { padding:16px 18px 20px;flex:1;display:flex;flex-direction:column;gap:10px; }
 
-@media (max-width: 820px) {
-    .products-hero { padding: 52px 24px 60px; }
-    .hero-inner { text-align: left; }
+/* ── Breakpoint 1 — Tablet ≥ 640 px ── */
+@media (min-width: 640px) {
+    .products-hero { padding: 64px 32px 72px; }
+    .hero-inner    { text-align: left; max-width: 100%; }
+    .prod-search   { margin: 0 0 24px; }         /* left-align search on tablet */
+}
+
+/* ── Breakpoint 2 — Desktop ≥ 960 px ── */
+@media (min-width: 960px) {
+    .products-hero { padding: 72px 40px 80px; }
+    .hero-inner    { text-align: center; max-width: 680px; margin: 0 auto; }
+    .prod-search   { margin: 0 auto 24px; }      /* re-centre search on desktop */
 }
 </style>
 
@@ -234,7 +243,7 @@ $products = $stmt->fetchAll();
             </a>
         </div>
     <?php else: ?>
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px;" id="product-grid">
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:20px;" id="product-grid">
             <?php foreach ($products as $p):
                 $img = productImg($p['image']);
             ?>

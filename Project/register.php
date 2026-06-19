@@ -35,9 +35,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($stmt->fetch()) {
             $error = 'An account with this email already exists.';
         } else {
-            $db->prepare("INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, 'customer')")
+            // New users start as unverified
+            $db->prepare("INSERT INTO users (username, email, password, role, email_verified) VALUES (?, ?, ?, 'customer', 0)")
                ->execute([$username, $email, password_hash($password, PASSWORD_DEFAULT)]);
-            $success = 'Account created! You can now sign in.';
+
+            $userId = (int)$db->lastInsertId();
+
+            // Generate email verification token (expires in 24 hours)
+            $token = generateToken();
+            $db->prepare("INSERT INTO email_verifications (user_id, token, expires_at) VALUES (?, ?, DATE_ADD(NOW(), INTERVAL 24 HOUR))")
+               ->execute([$userId, $token]);
+
+            $verifyLink = APP_URL . '/verify_email.php?token=' . $token;
+
+            $emailSent = sendEmail(
+                $email,
+                'Verify your TechHive email',
+                "<h2>Welcome to TechHive, {$username}!</h2>
+                 <p>Thanks for signing up! Click the button below to verify your email address.</p>
+                 <p style='margin:24px 0;'>
+                   <a href='{$verifyLink}' style='background:#1e3a8a;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700;'>
+                     Verify Email Address
+                   </a>
+                 </p>
+                 <p style='color:#6b7280;font-size:0.85em;'>Or copy this link: {$verifyLink}</p>
+                 <p style='color:#6b7280;font-size:0.85em;'>This link expires in 24 hours.</p>"
+            );
+
+            // Show link on screen only if SMTP is not configured / email failed
+            if (!$emailSent) {
+                $_SESSION['dev_verify_link'] = $verifyLink;
+            }
+
+            $success = 'Account created! Please verify your email to sign in.';
         }
     }
 }
@@ -168,9 +198,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <?php if ($success): ?>
             <div class="alert-success" style="margin-bottom:16px;">
-                <?= $success ?>
-                <a href="login.php" style="color:#15803d;font-weight:700;margin-left:6px;">Sign in →</a>
+                <?= htmlspecialchars($success) ?>
             </div>
+            <?php if (!empty($_SESSION['dev_verify_link'])): ?>
+            <div style="background:#fefce8;border:1px solid #fde047;border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:0.82rem;">
+                <strong style="color:#854d0e;">Dev mode — email link:</strong><br>
+                <a href="<?= htmlspecialchars($_SESSION['dev_verify_link']) ?>" style="color:#1e3a8a;word-break:break-all;">
+                    <?= htmlspecialchars($_SESSION['dev_verify_link']) ?>
+                </a>
+                <?php unset($_SESSION['dev_verify_link'], $_SESSION['dev_email_sent']); ?>
+            </div>
+            <?php endif; ?>
         <?php endif; ?>
 
         <?php if ($error): ?>

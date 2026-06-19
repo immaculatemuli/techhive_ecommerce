@@ -3,6 +3,15 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 
+/* ── Responsive images (global base) ──────────────────────────
+   Every <img> is capped at its container width, never overflows,
+   and preserves its natural aspect ratio on small screens.       */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
 body {
     font-family: 'Inter', system-ui, sans-serif;
     background: #ffffff;
@@ -172,6 +181,36 @@ footer a:hover { color: #111827; }
 ::-webkit-scrollbar-track { background: #fff; }
 ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 99px; }
 
-@media (max-width: 640px) {
+/* ════════════════════════════════════════════════════════════
+   MOBILE-FIRST MEDIA QUERIES
+   Base styles above target mobile (< 640 px).
+   Each breakpoint progressively enhances for larger screens.
+════════════════════════════════════════════════════════════ */
+
+/* ── Breakpoint 1 — Tablet  ≥ 640 px ── */
+@media (min-width: 640px) {
+    /* Navbar: show full link list on tablet and up */
+    #nav-links {
+        display: flex;
+    }
+    .nav-inner {
+        gap: 0;
+    }
+}
+
+/* ── Breakpoint 2 — Desktop ≥ 1024 px ── */
+@media (min-width: 1024px) {
+    /* Slightly larger base font on wide screens */
+    body {
+        font-size: 1rem;
+    }
+    /* Wider card padding on desktop */
+    .card {
+        border-radius: 14px;
+    }
+}
+
+/* ── Fallback: hide nav links below tablet (mobile default) ── */
+@media (max-width: 639px) {
     #nav-links { display: none; }
 }

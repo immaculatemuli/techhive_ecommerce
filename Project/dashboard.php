@@ -82,8 +82,48 @@ $statusColors = [
         </div>
     <?php endif; ?>
 
-    <div style="margin-top:32px;display:flex;gap:12px;flex-wrap:wrap;">
-        <a href="/techhive/Project/products/index.php" class="btn-primary" style="text-decoration:none;">Shop Products</a>
+    <!-- Quick actions -->
+    <div style="margin-top:36px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;">
+
+        <a href="/techhive/Project/products/index.php" class="card"
+           style="padding:20px;text-decoration:none;display:flex;align-items:center;gap:12px;transition:box-shadow 0.2s;">
+            <div style="font-size:1.5rem;">🛍️</div>
+            <div>
+                <p style="font-weight:700;color:var(--text);font-size:0.9rem;margin-bottom:2px;">Shop Products</p>
+                <p style="color:var(--muted);font-size:0.78rem;">Browse our catalog</p>
+            </div>
+        </a>
+
+        <a href="/techhive/Project/profile.php" class="card"
+           style="padding:20px;text-decoration:none;display:flex;align-items:center;gap:12px;transition:box-shadow 0.2s;">
+            <div style="font-size:1.5rem;">👤</div>
+            <div>
+                <p style="font-weight:700;color:var(--text);font-size:0.9rem;margin-bottom:2px;">My Profile</p>
+                <p style="color:var(--muted);font-size:0.78rem;">Update your info & photo</p>
+            </div>
+        </a>
+
+        <a href="/techhive/Project/2fa_setup.php" class="card"
+           style="padding:20px;text-decoration:none;display:flex;align-items:center;gap:12px;transition:box-shadow 0.2s;">
+            <div style="font-size:1.5rem;">🔐</div>
+            <div>
+                <p style="font-weight:700;color:var(--text);font-size:0.9rem;margin-bottom:2px;">Two-Factor Auth</p>
+                <p style="color:var(--muted);font-size:0.78rem;">Secure your account</p>
+            </div>
+        </a>
+
+        <a href="/techhive/Project/profile.php?section=password" class="card"
+           style="padding:20px;text-decoration:none;display:flex;align-items:center;gap:12px;transition:box-shadow 0.2s;">
+            <div style="font-size:1.5rem;">🔑</div>
+            <div>
+                <p style="font-weight:700;color:var(--text);font-size:0.9rem;margin-bottom:2px;">Change Password</p>
+                <p style="color:var(--muted);font-size:0.78rem;">Update your password</p>
+            </div>
+        </a>
+
+    </div>
+
+    <div style="margin-top:20px;">
         <a href="/techhive/Project/logout.php"
             style="padding:10px 20px;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-size:0.875rem;font-weight:600;text-decoration:none;">
             Sign out

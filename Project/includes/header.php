@@ -1,6 +1,12 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) session_start();
 
+// Auto-login via Remember Me cookie
+if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_token'])) {
+    require_once dirname(__DIR__) . '/config.php';
+    checkRememberMe();
+}
+
 $isLoggedIn = isset($_SESSION['user_id']);
 $username   = $isLoggedIn ? htmlspecialchars($_SESSION['username']) : '';
 $role       = $isLoggedIn ? $_SESSION['role'] : '';
@@ -37,6 +43,7 @@ $role       = $isLoggedIn ? $_SESSION['role'] : '';
 
         <div class="nav-auth">
             <?php if ($isLoggedIn): ?>
+                <a href="/techhive/Project/profile.php" class="nav-link" title="My Profile">Profile</a>
                 <a href="/techhive/Project/dashboard.php" class="nav-avatar" title="<?= $username ?>">
                     <?= strtoupper(mb_substr($_SESSION['username'], 0, 1)) ?>
                 </a>

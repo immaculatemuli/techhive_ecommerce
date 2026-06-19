@@ -7,23 +7,48 @@ if (isset($_SESSION['user_id'])) { header('Location: index.php'); exit; }
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email    = trim($_POST['email']    ?? '');
-    $password = $_POST['password']      ?? '';
+    $email      = trim($_POST['email']    ?? '');
+    $password   = $_POST['password']      ?? '';
+    $rememberMe = isset($_POST['remember_me']);
 
     if (empty($email) || empty($password)) {
         $error = 'Please fill in all fields.';
     } else {
         $db   = getDB();
-        $stmt = $db->prepare("SELECT id, username, password, role FROM users WHERE email = ?");
+        $stmt = $db->prepare("SELECT id, username, password, role, email_verified, two_fa_enabled, two_fa_secret FROM users WHERE email = ?");
         $stmt->execute([$email]);
         $user = $stmt->fetch();
 
         if ($user && password_verify($password, $user['password'])) {
-            $_SESSION['user_id']  = $user['id'];
-            $_SESSION['username'] = $user['username'];
-            $_SESSION['role']     = $user['role'];
-            header('Location: index.php');
-            exit;
+
+            // Block login if email not verified
+            if (!$user['email_verified']) {
+                $error = 'Please verify your email address before signing in. <a href="resend_verify.php?email=' . urlencode($email) . '" style="color:#dc2626;font-weight:700;">Resend verification email</a>';
+            } else {
+                // Handle Remember Me before 2FA so cookie is always set
+                if ($rememberMe) {
+                    $token = generateToken();
+                    $hash  = hash('sha256', $token);
+                    $db->prepare("UPDATE users SET remember_token = ? WHERE id = ?")->execute([$hash, $user['id']]);
+                    setcookie('remember_token', $token, time() + 60 * 60 * 24 * 30, '/', '', false, true);
+                }
+
+                // If 2FA is enabled, stage the user and go to 2FA verify
+                if ($user['two_fa_enabled'] && $user['two_fa_secret']) {
+                    $_SESSION['2fa_pending_id']       = $user['id'];
+                    $_SESSION['2fa_pending_username'] = $user['username'];
+                    $_SESSION['2fa_pending_role']     = $user['role'];
+                    header('Location: 2fa_verify.php');
+                    exit;
+                }
+
+                // Normal login
+                $_SESSION['user_id']  = $user['id'];
+                $_SESSION['username'] = $user['username'];
+                $_SESSION['role']     = $user['role'];
+                header('Location: index.php');
+                exit;
+            }
         } else {
             $error = 'Invalid email or password.';
         }
@@ -102,6 +127,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             justify-content: center;
         }
 
+        .remember-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            font-size: 0.83rem;
+        }
+        .remember-row label {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            color: #374151;
+            cursor: pointer;
+            user-select: none;
+        }
+        .remember-row input[type="checkbox"] {
+            width: 15px; height: 15px;
+            accent-color: #1e3a8a;
+            cursor: pointer;
+        }
+        .remember-row a {
+            color: #1e3a8a;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .remember-row a:hover { text-decoration: underline; }
+
         @media (max-width: 640px) {
             .auth-card { flex-direction: column; border-radius: 16px; }
             .auth-left  { width: 100%; padding: 36px 28px; }
@@ -138,7 +190,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <?php if ($error): ?>
-            <div class="alert-error" style="margin-bottom:20px;"><?= htmlspecialchars($error) ?></div>
+            <div class="alert-error" style="margin-bottom:20px;"><?= $error ?></div>
         <?php endif; ?>
 
         <form id="login-form" method="POST" novalidate>
@@ -151,7 +203,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <p id="email-error" class="field-error"></p>
             </div>
 
-            <div style="margin-bottom:24px;">
+            <div style="margin-bottom:8px;">
                 <label for="password" class="label">Password</label>
                 <div style="position:relative;">
                     <input type="password" id="password" name="password" class="field"
@@ -162,6 +214,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                    font-weight:600;cursor:pointer;font-family:inherit;">Show</button>
                 </div>
                 <p id="password-error" class="field-error"></p>
+            </div>
+
+            <!-- Remember Me + Forgot Password row -->
+            <div class="remember-row">
+                <label>
+                    <input type="checkbox" name="remember_me" <?= isset($_POST['remember_me']) ? 'checked' : '' ?>>
+                    Remember me for 30 days
+                </label>
+                <a href="forgot_password.php">Forgot password?</a>
             </div>
 
             <button type="submit" class="btn-primary" style="width:100%;font-size:0.9rem;padding:12px;">

@@ -32,13 +32,13 @@ $pageTitle = "TechHive | Kenya's Premium Tech Store";
         .hero-content {
             position: relative; z-index: 1;
             max-width: 1200px; margin: 0 auto;
-            padding: 80px 40px;
+            padding: 60px 20px; /* mobile default */
         }
 
-        /* ── Category cards ── */
+        /* ── Category cards — mobile-first grid ── */
         .cat-cards {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(2, 1fr); /* mobile: 2 columns */
             gap: 14px;
         }
         .cat-card {
@@ -146,10 +146,10 @@ $pageTitle = "TechHive | Kenya's Premium Tech Store";
         }
         .cart-land { animation: cart-land 0.58s cubic-bezier(0.34,1.56,0.64,1); }
 
-        /* ── Deal banner ── */
+        /* ── Deal banner — mobile-first grid ── */
         .deal {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;  /* mobile: single column */
             background: #111827;
             border-radius: 16px;
             overflow: hidden;
@@ -159,29 +159,37 @@ $pageTitle = "TechHive | Kenya's Premium Tech Store";
         .deal-img-col img { width: 100%; height: 100%; object-fit: cover; opacity: 0.85; }
         .deal-body { padding: 44px 40px; display: flex; flex-direction: column; justify-content: center; gap: 14px; }
 
-        /* ── Stats ── */
-        .stats { display: grid; grid-template-columns: repeat(4, 1fr); background: #0f172a; }
-        .stat-cell { padding: 32px 24px; text-align: center; border-right: 1px solid rgba(255,255,255,0.06); }
+        /* ── Stats — mobile-first grid ── */
+        .stats { display: grid; grid-template-columns: repeat(2, 1fr); background: #0f172a; } /* mobile: 2 cols */
+        .stat-cell { padding: 28px 20px; text-align: center; border-right: 1px solid rgba(255,255,255,0.06); }
         .stat-cell:last-child { border-right: none; }
 
-        /* ── Trust bar ── */
-        .trust { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid #e5e7eb; border-radius: 14px; overflow: hidden; }
-        .trust-item { padding: 24px 28px; display: flex; align-items: center; gap: 16px; border-right: 1px solid #e5e7eb; background: #fff; }
-        .trust-item:last-child { border-right: none; }
+        /* ── Trust bar — mobile-first grid ── */
+        .trust { display: grid; grid-template-columns: 1fr; border: 1px solid #e5e7eb; border-radius: 14px; overflow: hidden; } /* mobile: stack */
+        .trust-item { padding: 20px 24px; display: flex; align-items: center; gap: 16px; border-bottom: 1px solid #e5e7eb; background: #fff; }
+        .trust-item:last-child { border-bottom: none; }
 
         /* ── Section heading ── */
         .sec-row { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 28px; }
         .sec-title { font-size: 1.5rem; font-weight: 800; color: #111827; letter-spacing: -0.5px; }
 
-        @media (max-width: 960px) {
-            .cat-cards { grid-template-columns: repeat(3, 1fr); }
-            .deal { grid-template-columns: 1fr; }
-            .stats { grid-template-columns: repeat(2, 1fr); }
-            .trust { grid-template-columns: 1fr; }
+        /* ── Breakpoint 1 — Tablet ≥ 640 px ── */
+        @media (min-width: 640px) {
+            .cat-cards  { grid-template-columns: repeat(3, 1fr); }
+            .stats      { grid-template-columns: repeat(2, 1fr); }
+            .trust      { grid-template-columns: 1fr; }
+            .hero-content { padding: 80px 40px; }
         }
-        @media (max-width: 640px) {
-            .cat-cards { grid-template-columns: repeat(2, 1fr); }
-            .hero-content { padding: 60px 20px; }
+
+        /* ── Breakpoint 2 — Desktop ≥ 960 px ── */
+        @media (min-width: 960px) {
+            .cat-cards  { grid-template-columns: repeat(5, 1fr); }
+            .deal       { grid-template-columns: 1fr 1fr; }
+            .stats      { grid-template-columns: repeat(4, 1fr); }
+            .trust      { grid-template-columns: repeat(3, 1fr); }
+            .trust-item { border-bottom: none; border-right: 1px solid #e5e7eb; }
+            .trust-item:last-child { border-right: none; }
+            .stat-cell  { padding: 32px 24px; }
         }
     </style>
 
@@ -267,7 +275,7 @@ $pageTitle = "TechHive | Kenya's Premium Tech Store";
         </a>
     </div>
 
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:20px;">
         <?php foreach ($products as $i => $p):
             $src = productImg($p['image']);
         ?>
