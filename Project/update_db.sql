@@ -38,3 +38,8 @@ CREATE TABLE IF NOT EXISTS email_verifications (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     INDEX idx_token (token)
 );
+
+-- ── Extend orders table — payment method (Checkout) ─────────────
+ALTER TABLE orders
+    ADD COLUMN IF NOT EXISTS payment_method VARCHAR(20) NOT NULL DEFAULT 'cod',
+    ADD COLUMN IF NOT EXISTS payment_status ENUM('pending','paid') NOT NULL DEFAULT 'pending';

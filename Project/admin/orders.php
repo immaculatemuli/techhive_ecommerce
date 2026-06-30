@@ -24,26 +24,26 @@ $filter  = in_array($_GET['status'] ?? '', $validStatuses) ? $_GET['status'] : '
 $updated = $_GET['updated'] ?? false;
 
 $sql = "
-    SELECT o.id, o.total, o.status, o.created_at,
+    SELECT o.id, o.total, o.status, o.created_at, o.payment_method, o.payment_status,
            u.username, u.email,
            COUNT(oi.id) AS item_count
     FROM orders o
     JOIN users u ON o.user_id = u.id
     LEFT JOIN order_items oi ON o.id = oi.order_id
-    GROUP BY o.id, o.total, o.status, o.created_at, u.username, u.email
+    GROUP BY o.id, o.total, o.status, o.created_at, o.payment_method, o.payment_status, u.username, u.email
     ORDER BY o.created_at DESC
 ";
 
 if ($filter !== 'all') {
     $sql = "
-        SELECT o.id, o.total, o.status, o.created_at,
+        SELECT o.id, o.total, o.status, o.created_at, o.payment_method, o.payment_status,
                u.username, u.email,
                COUNT(oi.id) AS item_count
         FROM orders o
         JOIN users u ON o.user_id = u.id
         LEFT JOIN order_items oi ON o.id = oi.order_id
         WHERE o.status = ?
-        GROUP BY o.id, o.total, o.status, o.created_at, u.username, u.email
+        GROUP BY o.id, o.total, o.status, o.created_at, o.payment_method, o.payment_status, u.username, u.email
         ORDER BY o.created_at DESC
     ";
     $stmt = $db->prepare($sql);
@@ -52,6 +52,8 @@ if ($filter !== 'all') {
 } else {
     $orders = $db->query($sql)->fetchAll();
 }
+
+$paymentLabels = ['mpesa' => 'M-Pesa', 'card' => 'Card', 'cod' => 'Cash on Delivery'];
 
 $counts = $db->query("
     SELECT status, COUNT(*) AS n FROM orders GROUP BY status
@@ -107,6 +109,7 @@ $statusColors = [
                     <th style="text-align:left;padding:14px 16px;color:var(--muted);font-weight:600;">Customer</th>
                     <th style="text-align:left;padding:14px 16px;color:var(--muted);font-weight:600;">Items</th>
                     <th style="text-align:left;padding:14px 16px;color:var(--muted);font-weight:600;">Total</th>
+                    <th style="text-align:left;padding:14px 16px;color:var(--muted);font-weight:600;">Payment</th>
                     <th style="text-align:left;padding:14px 16px;color:var(--muted);font-weight:600;">Status</th>
                     <th style="text-align:left;padding:14px 16px;color:var(--muted);font-weight:600;">Date</th>
                     <th style="text-align:right;padding:14px 16px;color:var(--muted);font-weight:600;">Update</th>
@@ -115,7 +118,7 @@ $statusColors = [
             <tbody>
                 <?php if (empty($orders)): ?>
                     <tr>
-                        <td colspan="7" style="text-align:center;padding:60px;color:var(--muted);">
+                        <td colspan="8" style="text-align:center;padding:60px;color:var(--muted);">
                             No orders <?= $filter !== 'all' ? "with status <strong>$filter</strong>" : 'yet' ?>.
                         </td>
                     </tr>
@@ -133,6 +136,10 @@ $statusColors = [
                         </td>
                         <td style="padding:14px 16px;color:var(--muted);"><?= $o['item_count'] ?></td>
                         <td style="padding:14px 16px;font-weight:700;color:var(--text);"><?= ksh($o['total']) ?></td>
+                        <td style="padding:14px 16px;">
+                            <p style="font-size:0.8rem;color:var(--text);font-weight:600;margin-bottom:1px;"><?= htmlspecialchars($paymentLabels[$o['payment_method']] ?? ucfirst($o['payment_method'])) ?></p>
+                            <p style="font-size:0.72rem;color:<?= $o['payment_status'] === 'paid' ? '#16a34a' : 'var(--muted)' ?>;font-weight:600;"><?= $o['payment_status'] === 'paid' ? 'Paid' : 'Pending' ?></p>
+                        </td>
                         <td style="padding:14px 16px;">
                             <span style="padding:3px 10px;background:<?= $sc['bg'] ?>;border:1px solid <?= $sc['border'] ?>;border-radius:99px;font-size:0.72rem;color:<?= $sc['text'] ?>;font-weight:600;text-transform:capitalize;">
                                 <?= $o['status'] ?>
