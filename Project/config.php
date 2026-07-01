@@ -33,6 +33,49 @@ define('GOOGLE_CLIENT_ID',     '');   // paste your Client ID here
 define('GOOGLE_CLIENT_SECRET', '');   // paste your Client Secret here
 define('GOOGLE_REDIRECT_URI',  'http://localhost/techhive/google_auth.php');
 
+// ── Web Push (dummy M-Pesa prompt sent to your phone at checkout) ──
+// Self-generated keys, no third-party account needed. Regenerate with:
+//   cd Project/push-sender && npx web-push generate-vapid-keys --json
+define('VAPID_PUBLIC_KEY',  'BB3Lqpcs9gKxDw7lEn4uFlJxfFsmxv-vK5999dMPJoryZvr-tBoEiLvd2EIW2fOit4K56Ei8cpr3wLwj9G-fxg0');
+define('VAPID_PRIVATE_KEY', 'REoZgL7F8BakmI184_ljkVaFtsb2GF_s-_448hY2Dh8');
+define('VAPID_SUBJECT',     'mailto:admin@techhive.test');
+define('NODE_BINARY',       'C:\\Program Files\\nodejs\\node.exe');
+define('PUSH_SENDER_SCRIPT', __DIR__ . '/push-sender/send-push.js');
+
+// Sends one Web Push notification via the Node helper script.
+// Returns ['ok' => bool, 'error' => string|null]
+function sendPushNotification(array $subscription, array $payload): array {
+    $job = json_encode([
+        'subscription' => $subscription,
+        'payload'      => $payload,
+        'vapid'        => [
+            'subject'    => VAPID_SUBJECT,
+            'publicKey'  => VAPID_PUBLIC_KEY,
+            'privateKey' => VAPID_PRIVATE_KEY,
+        ],
+    ]);
+
+    $descriptors = [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']];
+    $process = proc_open([NODE_BINARY, PUSH_SENDER_SCRIPT], $descriptors, $pipes, __DIR__ . '/push-sender');
+    if (!is_resource($process)) {
+        return ['ok' => false, 'error' => 'Could not start push sender process'];
+    }
+
+    fwrite($pipes[0], $job);
+    fclose($pipes[0]);
+    $output = stream_get_contents($pipes[1]);
+    $errOut = stream_get_contents($pipes[2]);
+    fclose($pipes[1]);
+    fclose($pipes[2]);
+    proc_close($process);
+
+    $result = json_decode($output, true);
+    if (!is_array($result)) {
+        return ['ok' => false, 'error' => $errOut ?: 'No response from push sender'];
+    }
+    return $result;
+}
+
 // ── Currency helper ───────────────────────────────────────────
 // Returns price formatted as  KSh 12,999
 function ksh(float $amount): string {

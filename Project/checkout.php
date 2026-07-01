@@ -10,6 +10,7 @@ if (!isset($_SESSION['user_id'])) {
 $db   = getDB();
 $cart = $_SESSION['cart'] ?? [];
 
+
 if (empty($cart)) {
     header('Location: cart.php');
     exit;
@@ -218,38 +219,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div id="pay-modal-overlay" class="pay-modal-overlay">
             <div class="pay-modal">
 
-                <div id="pay-step-mpesa-confirm" class="pay-step">
+                <!-- Waiting for phone (push sent) -->
+                <div id="pay-step-phone-wait" class="pay-step">
                     <div class="pay-modal-icon mpesa">📱</div>
-                    <h3 class="pay-modal-title">Confirm M-Pesa payment</h3>
-                    <p class="pay-modal-text">Pay <strong><?= ksh($total) ?></strong> to TechHive from <strong id="pay-modal-phone">your phone</strong>?</p>
-                    <button type="button" id="pay-mpesa-ok" class="btn-primary" style="width:100%;">OK, Pay <?= ksh($total) ?></button>
+                    <h3 class="pay-modal-title">Prompt sent to your phone</h3>
+                    <p class="pay-modal-text">Check your phone and tap <strong>OK, Pay</strong> on the notification to confirm payment of <strong><?= ksh($total) ?></strong>.</p>
+                    <div class="pay-spinner"></div>
+                    <p class="pay-modal-sub" id="pay-timer-text">Waiting… (90s)</p>
                 </div>
 
-                <div id="pay-step-card-confirm" class="pay-step" style="display:none;">
-                    <div class="pay-modal-icon card">💳</div>
-                    <h3 class="pay-modal-title">Confirm card payment</h3>
-                    <p class="pay-modal-text">Charge <strong><?= ksh($total) ?></strong> to your card?</p>
-                    <button type="button" id="pay-card-ok" class="btn-primary" style="width:100%;">OK, Pay <?= ksh($total) ?></button>
+                <!-- Fallback: no push subscription, confirm in-page -->
+                <div id="pay-step-inpage-confirm" class="pay-step" style="display:none;">
+                    <div class="pay-modal-icon mpesa">📱</div>
+                    <h3 class="pay-modal-title">Confirm payment</h3>
+                    <p class="pay-modal-text">Pay <strong><?= ksh($total) ?></strong> to TechHive?</p>
+                    <button type="button" id="pay-inpage-ok" class="btn-primary" style="width:100%;margin-bottom:10px;">OK, Pay <?= ksh($total) ?></button>
+                    <p style="font-size:0.72rem;color:var(--muted);">Enable phone notifications for a real M-Pesa-style prompt on your phone next time.</p>
                 </div>
 
-                <div id="pay-step-mpesa-wait" class="pay-step" style="display:none;">
+                <!-- Confirming/processing spinner -->
+                <div id="pay-step-processing" class="pay-step" style="display:none;">
                     <div class="pay-modal-icon mpesa">📱</div>
-                    <h3 class="pay-modal-title">Confirming payment</h3>
-                    <p class="pay-modal-text">Talking to M-Pesa…</p>
+                    <h3 class="pay-modal-title">Confirming…</h3>
                     <div class="pay-spinner"></div>
                 </div>
 
-                <div id="pay-step-card-wait" class="pay-step" style="display:none;">
-                    <div class="pay-modal-icon card">💳</div>
-                    <h3 class="pay-modal-title">Processing payment</h3>
-                    <p class="pay-modal-text">Charging <strong><?= ksh($total) ?></strong> to your card…</p>
-                    <div class="pay-spinner"></div>
+                <!-- Cancelled on phone -->
+                <div id="pay-step-cancelled" class="pay-step" style="display:none;">
+                    <div style="font-size:2rem;margin-bottom:12px;">✕</div>
+                    <h3 class="pay-modal-title" style="color:#dc2626;">Payment cancelled</h3>
+                    <p class="pay-modal-text">You cancelled the payment on your phone.</p>
+                    <button type="button" id="pay-retry-btn" class="btn-primary" style="width:100%;margin-top:4px;">Try Again</button>
                 </div>
 
                 <div id="pay-step-success" class="pay-step" style="display:none;">
                     <div class="pay-modal-icon success">✓</div>
                     <h3 class="pay-modal-title">Payment successful</h3>
-                    <p class="pay-modal-text"><strong><?= ksh($total) ?></strong> received. Placing your order…</p>
+                    <p class="pay-modal-text"><strong><?= ksh($total) ?></strong> confirmed. Placing your order…</p>
                 </div>
 
             </div>
@@ -298,70 +304,131 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <script>
 (function () {
+    var VAPID_PUBLIC = <?= json_encode(VAPID_PUBLIC_KEY) ?>;
     var form = document.getElementById('checkout-form');
     if (!form) return;
 
+    // ── Payment method panel toggle ──────────────────────────────
     var cardPanel  = document.getElementById('pay-panel-card');
     var mpesaPanel = document.getElementById('pay-panel-mpesa');
     var radios     = form.querySelectorAll('input[name="payment_method"]');
-
     function syncPanel() {
-        var method = form.querySelector('input[name="payment_method"]:checked').value;
-        cardPanel.style.display  = method === 'card'  ? 'block' : 'none';
-        mpesaPanel.style.display = method === 'mpesa' ? 'block' : 'none';
+        var m = form.querySelector('input[name="payment_method"]:checked').value;
+        cardPanel.style.display  = m === 'card'  ? 'block' : 'none';
+        mpesaPanel.style.display = m === 'mpesa' ? 'block' : 'none';
     }
     radios.forEach(function (r) { r.addEventListener('change', syncPanel); });
     syncPanel();
 
-    var overlay = document.getElementById('pay-modal-overlay');
+    // ── Modal helpers ────────────────────────────────────────────
+    var overlay  = document.getElementById('pay-modal-overlay');
     var allSteps = overlay.querySelectorAll('.pay-step');
-    var stepMpesaConfirm = document.getElementById('pay-step-mpesa-confirm');
-    var stepCardConfirm  = document.getElementById('pay-step-card-confirm');
-    var stepMpesaWait    = document.getElementById('pay-step-mpesa-wait');
-    var stepCardWait     = document.getElementById('pay-step-card-wait');
-    var stepSuccess      = document.getElementById('pay-step-success');
-    var phoneSpan        = document.getElementById('pay-modal-phone');
-    var okMpesaBtn        = document.getElementById('pay-mpesa-ok');
-    var okCardBtn         = document.getElementById('pay-card-ok');
-    var submitted         = false;
-
-    function showStep(step) {
+    function showStep(id) {
         allSteps.forEach(function (s) { s.style.display = 'none'; });
-        step.style.display = 'block';
+        document.getElementById(id).style.display = 'block';
+        overlay.classList.add('open');
+    }
+    function closeModal() { overlay.classList.remove('open'); }
+
+    // ── Checkout submit ──────────────────────────────────────────
+    var submitted  = false;
+    var pollTimer  = null;
+    var countdown  = null;
+    var timerEl    = document.getElementById('pay-timer-text');
+
+    document.getElementById('pay-inpage-ok').addEventListener('click', function () {
+        finishPayment();
+    });
+
+    document.getElementById('pay-retry-btn').addEventListener('click', function () {
+        closeModal();
+    });
+
+    function startPolling(token) {
+        var secondsLeft = 90;
+        countdown = setInterval(function () {
+            secondsLeft--;
+            if (timerEl) timerEl.textContent = 'Waiting… (' + secondsLeft + 's)';
+            if (secondsLeft <= 0) {
+                clearInterval(countdown);
+                clearInterval(pollTimer);
+                showStep('pay-step-inpage-confirm'); // timed out — fallback to in-page
+            }
+        }, 1000);
+
+        pollTimer = setInterval(function () {
+            fetch('/techhive/Project/check_payment.php?token=' + encodeURIComponent(token), { credentials: 'include' })
+                .then(function (r) { return r.json(); })
+                .then(function (data) {
+                    if (data.status === 'confirmed') {
+                        clearInterval(pollTimer);
+                        clearInterval(countdown);
+                        finishPayment();
+                    } else if (data.status === 'cancelled') {
+                        clearInterval(pollTimer);
+                        clearInterval(countdown);
+                        showStep('pay-step-cancelled');
+                    } else if (data.status === 'expired') {
+                        clearInterval(pollTimer);
+                        clearInterval(countdown);
+                        showStep('pay-step-inpage-confirm');
+                    }
+                })
+                .catch(function () {});
+        }, 1500);
     }
 
-    function finishPayment(waitStep) {
-        showStep(waitStep);
+    function finishPayment() {
+        if (pollTimer)  clearInterval(pollTimer);
+        if (countdown)  clearInterval(countdown);
+        showStep('pay-step-processing');
         setTimeout(function () {
-            showStep(stepSuccess);
+            showStep('pay-step-success');
             setTimeout(function () {
                 submitted = true;
                 form.submit();
             }, 900);
-        }, 1100);
+        }, 900);
     }
 
-    okMpesaBtn.addEventListener('click', function () { finishPayment(stepMpesaWait); });
-    okCardBtn.addEventListener('click',  function () { finishPayment(stepCardWait); });
-
     form.addEventListener('submit', function (e) {
-        if (submitted) return; // the real submit triggered by finishPayment() — let it through
+        if (submitted) return;
 
         var method = form.querySelector('input[name="payment_method"]:checked').value;
-        if (method === 'cod') return; // no simulation needed
+        if (method === 'cod') return;
 
         e.preventDefault();
 
-        if (method === 'mpesa') {
-            var phone = (form.phone.value || '').trim();
-            phoneSpan.textContent = phone || 'your phone';
-            showStep(stepMpesaConfirm);
-        } else {
-            showStep(stepCardConfirm);
-        }
-
-        overlay.classList.add('open');
+        fetch('/techhive/Project/initiate_payment.php', {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ amount: <?= json_encode($total) ?>, method: method }),
+        })
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+                if (data.no_subscription || !data.ok) {
+                    // No push sub or send failed — fall back to in-page confirm
+                    showStep('pay-step-inpage-confirm');
+                } else {
+                    showStep('pay-step-phone-wait');
+                    startPolling(data.token);
+                }
+            })
+            .catch(function () {
+                showStep('pay-step-inpage-confirm');
+            });
     });
+
+    // ── VAPID key conversion utility ─────────────────────────────
+    function urlBase64ToUint8Array(base64String) {
+        var padding = '='.repeat((4 - base64String.length % 4) % 4);
+        var base64  = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+        var raw     = atob(base64);
+        var output  = new Uint8Array(raw.length);
+        for (var i = 0; i < raw.length; i++) { output[i] = raw.charCodeAt(i); }
+        return output;
+    }
 })();
 </script>
 
