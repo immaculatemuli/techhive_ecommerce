@@ -104,6 +104,7 @@ vendor/
 | Week 6 | Database integration, PDO connection, full CRUD operations for products |
 | Week 7 | User authentication and session management; bonus: Password Reset, Email Verification, 2FA, Profile |
 | Week 8 | Responsive Web Design and Mobile-First Development — profile page, mobile/tablet/desktop views |
+| Week 9 | Servlets, JSP, sessions and cookies (separate Java/Tomcat app) — student login, session tracking, theme cookie, Remember Me |
 
 ---
 
@@ -119,3 +120,4 @@ vendor/
 | `Week6/` | README, screenshots |
 | `Week7/` | README, screenshots — registration, login, session, logout, password reset, email verification, 2FA, profile |
 | `Week8/` | README, screenshots — responsive profile page, mobile view, tablet view, desktop view |
+| `Week9/` | `StudentLogin/` (Servlet/JSP app for Tomcat: `login.jsp`, `LoginServlet.java`, `welcome.jsp`, `logout.jsp`), README, screenshots |
