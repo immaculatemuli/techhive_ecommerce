@@ -1,26 +1,25 @@
 # Week 9 - Java Web Services, Servlet Lifecycle, Session Management and Cookies
 
-**Status:** ✅ Done
 **Environment:** Eclipse IDE + Apache Tomcat v10.1 + Java Servlets + JSP
 
 ---
 
-## Fig 1 — Eclipse Project Structure
+## Fig 1: Eclipse Project Structure
 ![Fig 1](screenshots/fig1-eclipse-structure.png)
 
 ---
 
-## Fig 2 — Login Page
+## Fig 2: Login Page
 ![Fig 2](screenshots/fig2-login-page.png)
 
 ---
 
-## Fig 3 — Wrong Credentials Validation
+## Fig 3: Wrong Credentials Validation
 ![Fig 3](screenshots/fig3-wrong-credentials.png)
 
 ---
 
-## Fig 4 — Session ID and Login Time on Dashboard
+## Fig 4: Session ID and Login Time on Dashboard
 ![Fig 4](screenshots/fig4-session-dashboard.png)
 
 ---
@@ -30,13 +29,17 @@
 
 ---
 
-## Fig 6 — Remember Me Cookie
+## Fig 6: Remember Me Cookie
 ![Fig 6](screenshots/fig6-remember-me-cookie.png)
+
+![Fig 6b](screenshots/fig6b-remember-me-cookie.png)
 
 ---
 
-## Fig 7 — Logout and Session Destruction
+## Fig 7: Logout and Session Destruction
 ![Fig 7](screenshots/fig7-logout.png)
+
+![Fig 7b](screenshots/fig7b-logout.png)
 
 ---
 
@@ -56,10 +59,10 @@
 | Recommended for login | Recommended for preferences |
 
 ## Files
-- LoginServlet.java — validates credentials, creates HttpSession, handles Remember Me cookie
-- login.jsp — login form with Remember Me checkbox and cookie pre-fill
-- welcome.jsp — protected page showing session username, login time, session ID and sets theme cookie
-- logout.jsp — invalidates session and redirects to login
+- LoginServlet.java - validates credentials, creates HttpSession, handles Remember Me cookie
+- login.jsp - login form with Remember Me checkbox and cookie pre-fill
+- welcome.jsp - protected page showing session username, login time, session ID and sets theme cookie
+- logout.jsp - invalidates session and redirects to login
 
 ## Reflection
 Week 9 introduced Java Web Services, Servlet lifecycle and 
