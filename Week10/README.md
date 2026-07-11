@@ -17,47 +17,43 @@ CREATE TABLE students (
 
 ---
 
-## Fig 1 - Database Creation in phpMyAdmin
+## Fig 1 - Database Creation and Students Table in phpMyAdmin
 ![Fig 1](screenshots/fig1-database.png)
 
 studentdb created in phpMyAdmin showing the students table.
 
----
-
-## Fig 2 - Students Table with Sample Data
-![Fig 2](screenshots/fig2-students-table.png)
-
 students table showing all records with id, name, course
 and email columns.
 
+
 ---
 
-## Fig 3 - Add Student Form
-![Fig 3](screenshots/fig3-add-form.png)
+## Fig 2 - Add Student Form
+![Fig 2](screenshots/fig2-add-form.png)
 
 addStudent.jsp form for inserting new student records
 into studentdb.
 
 ---
 
-## Fig 4 - Student Added Successfully
-![Fig 4](screenshots/fig4-success.png)
+## Fig 3 - Student Added Successfully
+![Fig 3](screenshots/fig3-success.png)
 
 Success message after student inserted using INSERT INTO
 via JDBC PreparedStatement.
 
 ---
 
-## Fig 5 - View All Students Dynamically
-![Fig 5](screenshots/fig5-view-students.png)
+## Fig 4 - View All Students Dynamically
+![Fig 4](screenshots/fig4-view-students.png)
 
 viewStudents.jsp fetching all records from studentdb
 using SELECT query and displaying dynamically in JSP table.
 
 ---
 
-## Fig 6 - DBConnection.java JDBC Code
-![Fig 6](screenshots/fig6-dbconnection-code.png)
+## Fig 5 - DBConnection.java JDBC Code
+![Fig 5](screenshots/fig5-dbconnection-code.png)
 
 DBConnection.java showing JDBC connection using
 DriverManager.getConnection() with studentdb connection string.
@@ -78,9 +74,9 @@ DriverManager.getConnection() with studentdb connection string.
 ## Reflection
 Week 10 introduced dynamic HTML generation and JDBC database
 connectivity. Fig 1 shows studentdb created in phpMyAdmin with
-the students table. Fig 2 shows the students table containing
-sample records. Fig 3 shows the add student form. Fig 4 shows
+the students table and also shows the students table containing
+sample records. Fig 2 shows the add student form. Fig 3 shows
 the success message after a student is added using INSERT INTO.
-Fig 5 shows all students fetched dynamically using SELECT and
-displayed in a JSP table. Fig 6 shows DBConnection.java
+Fig 4 shows all students fetched dynamically using SELECT and
+displayed in a JSP table. Fig 5 shows DBConnection.java
 establishing the JDBC connection using DriverManager.getConnection().
