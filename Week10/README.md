@@ -37,7 +37,7 @@ into studentdb.
 ---
 
 ## Fig 3 - Student Added Successfully
-![Fig 3](screenshots/fig3-success.png)
+![Fig 3](screenshots/fig3-add-success.png)
 
 Success message after student inserted using INSERT INTO
 via JDBC PreparedStatement.
