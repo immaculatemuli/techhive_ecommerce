@@ -17,7 +17,7 @@ public class LoginServlet extends HttpServlet {
 
         if (username != null && !username.isEmpty()
                 && username.equals("admin")
-                && password.equals("1234")) {
+                && "1234".equals(password)) {
 
             // Create session
             HttpSession session = request.getSession();
